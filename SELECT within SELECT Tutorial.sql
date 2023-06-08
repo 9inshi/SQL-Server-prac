@@ -54,10 +54,26 @@ SELECT continent, name, area FROM world x
           AND area >0)
 
 8.列出洲份名稱，和每個洲份中國家名字按子母順序是排首位的國家名。(即每洲只有列一國)
+SELECT continent, name FROM world AS x
+  WHERE x.name = (SELECT MIN(name) FROM world AS y WHERE y.continent = x.continent)
 
+ 9.找出洲份，當中全部國家都有少於或等於 25000000 人口. 在這些洲份中，列出國家名字name，continent 洲份和population人口。
+SELECT name, continent, population FROM world 
+WHERE continent IN (SELECT DISTINCT(continent) FROM world x 
+                    WHERE 25000000 >= ALL(SELECT population FROM world y 
+                                          WHERE y.continent = x.continent AND population > 0))
+--
+SELECT name, continent, population FROM world WHERE continent IN
+(SELECT DISTINCT(continent) FROM world WHERE 25000000 >= ALL )
+不重複(州) 25000000 大於所有人口的 --改ALL(...) >= 25000000會出錯 不行
+ALL (SELECT population FROM world y WHERE y.continent = x.continent AND population > 0)
+所有 人口 ，人口數大於零且州跟X州相同
 
-
-
+10.有些國家的人口是同洲份的所有其他國的3倍或以上。列出 國家名字name 和 洲份 continent。
+SELECT name, continet FROM world x 
+WHERE population >= ALL (SELECT population*3 FROM world y 
+                         WHERE y.continent = x.continent AND x.name != b.name AND population>0)
+--系統掛掉跑不出來不知對錯
 
 
 
