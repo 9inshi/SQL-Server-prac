@@ -1,0 +1,7 @@
+--Using Null
+
+1.
+列出學系department是NULL值的老師。
+
+為何不能用 =
+你可能會以為 dept=NULL 是可行的，但它不是。你要使用dept IS NULL
